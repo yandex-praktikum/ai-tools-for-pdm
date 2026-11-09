@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 430" fill="none">
+  <title>Рыжий хвост Бориса, свернутый в вопросительный знак</title>
+  <circle cx="423" cy="94" r="50" fill="#E6B75E" opacity=".76"/>
+  <path d="M75 366c92-18 176-8 255 0 63 7 108 4 155-8v48H75v-40Z" fill="#B7D09B"/>
+  <ellipse cx="281" cy="374" rx="126" ry="15" fill="#557E55" opacity=".2"/>
+  <path d="M160 354c-19-42 3-73 48-99 54-31 99-63 102-121 2-50-29-81-73-79-42 2-70 34-65 78" stroke="#C87445" stroke-width="58" stroke-linecap="round"/>
+  <path d="M168 359c-14-17-33-22-54-16" stroke="#9B4F38" stroke-width="13" stroke-linecap="round"/>
+  <circle cx="307" cy="279" r="25" fill="#C87445"/>
+  <circle cx="307" cy="279" r="8" fill="#F5E9D1"/>
+  <path d="M172 354c-18-17-37-22-59-14" stroke="#477A57" stroke-width="7" stroke-linecap="round"/>
+  <path d="m109 339-14-12m21 18-17 6" stroke="#477A57" stroke-width="5" stroke-linecap="round"/>
+  <path d="M110 319c-9-19-6-34 9-46m-9 25-15-3m348 48c9-19 7-35-8-47m9 27 15-4" stroke="#557E55" stroke-width="5" stroke-linecap="round"/>
+</svg>
