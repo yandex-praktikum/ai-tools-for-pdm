@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кто выгуливает Бориса</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <h1>Кто выгуливает Бориса</h1>
+      <p class="today">Сегодня: <span id="today-date"></span></p>
+    </header>
+
+    <section class="slots-section" aria-label="Слоты прогулок на сегодня">
+      <h2>Слоты на сегодня</h2>
+      <ul id="slots" class="slots"></ul>
+    </section>
+
+    <section class="feeding-section" aria-label="Последнее кормление">
+      <h2>Последнее кормление</h2>
+      <p id="feeding-card" class="feeding-card">Загружаем…</p>
+      <form id="feeding-form" class="feeding-form">
+        <input id="feeding-name" name="name" placeholder="Кто кормил (ФИО)" required>
+        <button type="submit">Отметить кормление</button>
+      </form>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
