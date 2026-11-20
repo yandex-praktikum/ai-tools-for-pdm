@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Агент-диспетчер по возвратам</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f6f8;
+            color: #222;
+        }
+        header {
+            background: #202938;
+            color: white;
+            padding: 24px 32px;
+        }
+        header h1 { margin: 0 0 8px; }
+        header p { margin: 0; color: #ccd5e1; }
+        main {
+            display: grid;
+            grid-template-columns: 310px 1fr;
+            gap: 24px;
+            padding: 24px;
+        }
+        section {
+            background: white;
+            border: 1px solid #e1e4ea;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .case-button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 14px;
+            margin: 8px 0;
+            border: 1px solid #e1e4ea;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+        }
+        .case-button:hover,
+        .case-button.active {
+            background: #eaf1ff;
+            border-color: #4776bd;
+        }
+        .case-button strong { display: block; }
+        .case-button span {
+            display: block;
+            margin-top: 5px;
+            font-size: 13px;
+            color: #606a78;
+        }
+        .field {
+            border-bottom: 1px solid #eee;
+            padding: 12px 0;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+        .field strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .note {
+            padding: 12px;
+            background: #f3f5f8;
+            border-radius: 8px;
+            margin-top: 18px;
+        }
+        @media (max-width: 700px) {
+            main { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Агент-диспетчер по возвратам</h1>
+        <p>Клевер Маркет · Учебный проект</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Очередь обращений</h2>
+            <p id="count">Загрузка...</p>
+            <div id="cases"></div>
+        </section>
+
+        <section>
+            <h2 id="case-title">Выберите обращение</h2>
+            <div id="details">
+                Нажмите на обращение в списке слева.
+            </div>
+            <div class="note">
+                Рекомендации ИИ и подтверждение менеджера
+                будут добавлены на следующем этапе.
+                Окончательное решение принимает менеджер.
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const casesContainer = document.getElementById("cases");
+        const detailsContainer = document.getElementById("details");
+
+        function addField(parent, label, value) {
+            const field = document.createElement("div");
+            field.className = "field";
+
+            const heading = document.createElement("strong");
+            heading.textContent = label;
+
+            const content = document.createElement("div");
+            content.textContent =
+                typeof value === "string"
+                    ? value
+                    : JSON.stringify(value ?? "Нет данных", null, 2);
+
+            field.append(heading, content);
+            parent.appendChild(field);
+        }
+
+        async function showCase(caseId) {
+            detailsContainer.textContent = "Загрузка...";
+
+            try {
+                const response = await fetch(
+                    "/api/cases/" + encodeURIComponent(caseId)
+                );
+                if (!response.ok) {
+                    throw new Error("Не удалось получить обращение");
+                }
+
+                const data = await response.json();
+
+                document.getElementById("case-title").textContent =
+                    "Обращение " + caseId;
+
+                detailsContainer.replaceChildren();
+
+                addField(detailsContainer, "Тема", data.case.subject);
+                addField(detailsContainer, "Клиент", data.case.sender_name);
+                addField(detailsContainer, "Письмо", data.case.letter);
+                addField(detailsContainer, "Номер заказа", data.case.order_number);
+                addField(detailsContainer, "Данные заказа", data.order);
+                addField(detailsContainer, "История обращений", data.history);
+             
+            
+                function showAnalysis(analysis, decision = null) {
+                    const existing = document.getElementById("analysis-card");
+                    if (existing) existing.remove();
+
+                    const card = document.createElement("div");
+                    card.id = "analysis-card";
+
+                    addField(card, "Маршрут ИИ", analysis.route);
+                    addField(card, "Обоснование", analysis.reason);
+                    addField(card, "Недостающие сведения", analysis.missing_information);
+                    addField(card, "Черновик клиенту", analysis.customer_draft);
+                    addField(card, "Комментарий менеджеру", analysis.manager_notes);
+
+                    const title = document.createElement("h3");
+                    title.textContent = "Решение менеджера";
+                    card.appendChild(title);
+
+                    if (decision && decision.manager_confirmed) {
+                        addField(card, "Итоговое решение", decision.final_decision);
+                        if (decision.manager_reason) {
+                            addField(card, "Причина менеджера", decision.manager_reason);
+                        }
+                        detailsContainer.appendChild(card);
+                        return;
+                    }
+
+                    const select = document.createElement("select");
+
+                    [
+                        ["", "Выберите решение"],
+                        ["APPROVED", "Одобрить возврат"],
+                        ["DENIED", "Отказать в возврате"]
+                    ].forEach(([value, label]) => {
+                        const option = document.createElement("option");
+                        option.value = value;
+                        option.textContent = label;
+                        select.appendChild(option);
+                    });
+
+                    card.appendChild(select);
+
+                    const reasonInput = document.createElement("textarea");
+                    reasonInput.placeholder = "Причина изменения рекомендации ИИ";
+                    reasonInput.rows = 3;
+                    card.appendChild(reasonInput);
+
+                    const confirmButton = document.createElement("button");
+                    confirmButton.textContent = "Подтвердить решение";
+                    card.appendChild(confirmButton);
+
+                    const status = document.createElement("div");
+                    card.appendChild(status);
+
+                    confirmButton.addEventListener("click", async () => {
+                        const finalDecision = select.value;
+                        const reason = reasonInput.value.trim();
+
+                        if (!finalDecision) {
+                            alert("Выберите решение менеджера");
+                            return;
+                        }
+
+                        const expected = {
+                            RECOMMEND_APPROVE: "APPROVED",
+                            RECOMMEND_DENY: "DENIED"
+                        }[analysis.route];
+
+                        if (finalDecision !== expected && !reason) {
+                            alert("Укажите причину изменения рекомендации ИИ");
+                            return;
+                        }
+
+                        if (!window.confirm("Подтвердить окончательное решение?")) {
+                            return;
+                        }
+
+                        const managerKey = window.prompt("Введите ключ менеджера:");
+                        if (!managerKey) return;
+
+                        confirmButton.disabled = true;
+
+                        try {
+                            const response = await fetch("/api/manager/confirm", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-Manager-Key": managerKey
+                                },
+                                body: JSON.stringify({
+                                    case_id: caseId,
+                                    final_decision: finalDecision,
+                                    manager_reason: reason
+                                })
+                            });
+
+                            const saved = await response.json();
+
+                            if (!response.ok) {
+                                throw new Error(saved.error || "Ошибка сохранения");
+                            }
+
+                            status.textContent =
+                                "Решение сохранено: " + saved.final_decision;
+
+                            select.disabled = true;
+                            reasonInput.disabled = true;
+                            confirmButton.disabled = true;
+                            confirmButton.textContent = "Решение подтверждено";
+
+                        } catch (error) {
+                            alert(error.message);
+                            confirmButton.disabled = false;
+                        }
+                    });
+
+                    detailsContainer.appendChild(card);
+                }
+
+                if (data.analysis) {
+                    showAnalysis(data.analysis, data.decision);
+                } else {
+                    const analyzeButton = document.createElement("button");
+                    analyzeButton.textContent = "Анализировать с ИИ";
+
+                    analyzeButton.addEventListener("click", async () => {
+                        const managerKey = window.prompt("Введите ключ менеджера:");
+                        if (!managerKey) return;
+
+                        analyzeButton.disabled = true;
+                        analyzeButton.textContent = "ИИ анализирует обращение...";
+
+                        try {
+                            const response = await fetch(
+                                "/api/cases/" + encodeURIComponent(caseId) + "/analyze",
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "X-Manager-Key": managerKey
+                                    }
+                                }
+                            );
+
+                            const result = await response.json();
+
+                            if (!response.ok) {
+                                throw new Error(result.error || "Ошибка анализа");
+                            }
+
+                            analyzeButton.remove();
+                            showAnalysis(result.analysis);
+
+                        } catch (error) {
+                            alert(error.message);
+                            analyzeButton.disabled = false;
+                            analyzeButton.textContent = "Анализировать с ИИ";
+                        }
+                    });
+
+                    detailsContainer.appendChild(analyzeButton);
+                }
+
+
+                document.querySelectorAll(".case-button").forEach(button => {
+                    button.classList.toggle(
+                        "active",
+                        button.dataset.caseId === caseId
+                    );
+                });
+            } catch (error) {
+                detailsContainer.textContent = error.message;
+            }
+        }
+
+        async function loadCases() {
+            try {
+                const response = await fetch("/api/cases");
+                if (!response.ok) {
+                    throw new Error("Не удалось загрузить очередь");
+                }
+
+                const data = await response.json();
+                const cases = data.cases;
+
+                document.getElementById("count").textContent =
+                    "Всего обращений: " + cases.length;
+
+                casesContainer.replaceChildren();
+
+                cases.forEach(item => {
+                    const button = document.createElement("button");
+                    button.className = "case-button";
+                    button.dataset.caseId = item.case_id;
+
+                    const number = document.createElement("strong");
+                    number.textContent = item.case_id;
+
+                    const subject = document.createElement("span");
+                    subject.textContent = item.subject;
+
+                    button.append(number, subject);
+                    button.addEventListener("click", () => {
+                        showCase(item.case_id);
+                    });
+
+                    casesContainer.appendChild(button);
+                });
+            } catch (error) {
+                document.getElementById("count").textContent =
+                    error.message;
+            }
+        }
+
+        loadCases();
+    </script>
+</body>
+</html>
+
