@@ -1,0 +1,301 @@
+{
+  "company": "Клевер Маркет",
+  "orders": [
+    {
+      "order_number": "SC-84721",
+      "customer_name": "Елена Морозова",
+      "created_at": "2026-08-27",
+      "delivered_at": "2026-08-30",
+      "status": "DELIVERED",
+      "delivery_city": "Тверь",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "ALT-LIN-M-PINE",
+          "name": "Льняная рубашка «Альта», размер M, сосновый",
+          "category": "APPAREL",
+          "quantity": 1,
+          "price_rub": 3490
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84785",
+      "customer_name": "Мария Громова",
+      "created_at": "2026-08-30",
+      "delivered_at": "2026-09-01",
+      "status": "DELIVERED",
+      "delivery_city": "Калуга",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "ARC-MINI-BLACK",
+          "name": "Беспроводные наушники «Арк Mini», чёрные",
+          "category": "PERSONAL_ELECTRONICS",
+          "quantity": 1,
+          "price_rub": 6990
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84804",
+      "customer_name": "Олег Сафронов",
+      "created_at": "2026-09-01",
+      "delivered_at": "2026-09-03",
+      "status": "DELIVERED",
+      "delivery_city": "Рязань",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "NEST-OAK-6",
+          "name": "Настольный органайзер «Гнездо», дуб, 6 секций",
+          "category": "HOME_GOODS",
+          "quantity": 1,
+          "price_rub": 2850
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84846",
+      "customer_name": "Ирина Белова",
+      "created_at": "2026-09-02",
+      "delivered_at": "2026-09-05",
+      "status": "DELIVERED",
+      "delivery_city": "Ярославль",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "KADR-4K-SILVER",
+          "name": "Камера «Кадр 4K», серебристая",
+          "category": "HIGH_VALUE_ELECTRONICS",
+          "quantity": 1,
+          "price_rub": 64500
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84502",
+      "customer_name": "Павел Яшин",
+      "created_at": "2026-08-22",
+      "delivered_at": "2026-08-25",
+      "status": "DELIVERED",
+      "delivery_city": "Владимир",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "TOCHKA-GRAPHITE",
+          "name": "Кофемолка «Точка», графитовая",
+          "category": "KITCHEN_APPLIANCES",
+          "quantity": 1,
+          "price_rub": 5600
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84911",
+      "customer_name": "Кирилл Ветров",
+      "created_at": "2026-08-25",
+      "delivered_at": "2026-08-28",
+      "status": "DELIVERED",
+      "delivery_city": "Тула",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "RITM-S2-40-GRAPHITE",
+          "name": "Смарт-часы «Ритм S2», 40 мм, графит",
+          "category": "WEARABLE_ELECTRONICS",
+          "quantity": 1,
+          "price_rub": 17900
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84934",
+      "customer_name": "Антон Рябинин",
+      "created_at": "2026-09-01",
+      "delivered_at": "2026-09-03",
+      "status": "DELIVERED",
+      "delivery_city": "Кострома",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "VOLNA-MINI-GRAPHITE",
+          "name": "Портативная колонка «Волна Mini», графитовая",
+          "category": "PERSONAL_ELECTRONICS",
+          "quantity": 1,
+          "price_rub": 5290
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84966",
+      "customer_name": "Светлана Власова",
+      "created_at": "2026-09-02",
+      "delivered_at": "2026-09-04",
+      "status": "DELIVERED",
+      "delivery_city": "Иваново",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "MAYAK-WHITE",
+          "name": "Торшер «Маяк», белый",
+          "category": "HOME_GOODS",
+          "quantity": 1,
+          "price_rub": 7990
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84973",
+      "customer_name": "Маргарита Горина",
+      "created_at": "2026-08-29",
+      "delivered_at": "2026-09-01",
+      "status": "DELIVERED",
+      "delivery_city": "Тула",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "VETER-S-TERRA",
+          "name": "Куртка «Ветер», размер S, терракотовая",
+          "category": "APPAREL",
+          "quantity": 1,
+          "price_rub": 8790
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84989",
+      "customer_name": "Никита Ларионов",
+      "created_at": "2026-09-03",
+      "delivered_at": "2026-09-05",
+      "status": "DELIVERED",
+      "delivery_city": "Брянск",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "RANOK-BLACK",
+          "name": "Тостер «Ранок», чёрный",
+          "category": "KITCHEN_APPLIANCES",
+          "quantity": 1,
+          "price_rub": 4990
+        }
+      ]
+    },
+    {
+      "order_number": "SC-85001",
+      "customer_name": "Дарья Мельникова",
+      "created_at": "2026-09-04",
+      "delivered_at": "2026-09-06",
+      "status": "DELIVERED",
+      "delivery_city": "Смоленск",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "SHAG-3-BLUE",
+          "name": "Фитнес-браслет «Шаг 3», синий",
+          "category": "WEARABLE_ELECTRONICS",
+          "quantity": 1,
+          "price_rub": 7490
+        }
+      ]
+    },
+    {
+      "order_number": "SC-85012",
+      "customer_name": "Алексей Чернов",
+      "created_at": "2026-09-04",
+      "delivered_at": "2026-09-07",
+      "status": "DELIVERED",
+      "delivery_city": "Москва",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "ESKIZ-PRO-13",
+          "name": "Графический планшет «Эскиз Pro 13», чёрный",
+          "category": "HIGH_VALUE_ELECTRONICS",
+          "quantity": 1,
+          "price_rub": 48900
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84487",
+      "customer_name": "Валерия Фомина",
+      "created_at": "2026-08-16",
+      "delivered_at": "2026-08-20",
+      "status": "DELIVERED",
+      "delivery_city": "Пенза",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "EKRAN-GO-SILVER",
+          "name": "Медиаплеер «Экран Go», серебристый",
+          "category": "PERSONAL_ELECTRONICS",
+          "quantity": 1,
+          "price_rub": 10990
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84690",
+      "customer_name": "Роман Козлов",
+      "created_at": "2026-08-29",
+      "delivered_at": "2026-09-01",
+      "status": "DELIVERED",
+      "delivery_city": "Орёл",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "MIX-5-SILVER",
+          "name": "Планетарный миксер «Микс 5», серебристый",
+          "category": "KITCHEN_APPLIANCES",
+          "quantity": 1,
+          "price_rub": 12990
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84595",
+      "customer_name": "Юлия Волкова",
+      "created_at": "2026-08-24",
+      "delivered_at": "2026-08-27",
+      "status": "DELIVERED",
+      "delivery_city": "Липецк",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "VEKTOR-WHITE",
+          "name": "Кухонный комбайн «Вектор», белый",
+          "category": "KITCHEN_APPLIANCES",
+          "quantity": 1,
+          "price_rub": 11490
+        }
+      ]
+    },
+    {
+      "order_number": "SC-84922",
+      "customer_name": "Сергей Лобанов",
+      "created_at": "2026-08-24",
+      "delivered_at": "2026-08-27",
+      "status": "DELIVERED",
+      "delivery_city": "Нижний Новгород",
+      "items": [
+        {
+          "line_id": "1",
+          "sku": "LINIYA-WALNUT-80",
+          "name": "Настенная полка «Линия», орех, 80 см",
+          "category": "HOME_GOODS",
+          "quantity": 1,
+          "price_rub": 4290
+        },
+        {
+          "line_id": "2",
+          "sku": "LINIYA-FIX-80",
+          "name": "Комплект креплений «Линия», 80 см",
+          "category": "HOME_GOODS",
+          "quantity": 1,
+          "price_rub": 390
+        }
+      ]
+    }
+  ]
+}

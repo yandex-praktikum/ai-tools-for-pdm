@@ -1,0 +1,44 @@
+{
+  "history": [
+    {
+      "record_id": "RH-5887",
+      "order_number": "SC-84502",
+      "opened_at": "2026-08-30T15:24:00+03:00",
+      "closed_at": "2026-09-01T11:16:00+03:00",
+      "status": "RETURN_AUTHORIZED",
+      "reason_code": "ITEM_DOES_NOT_WORK",
+      "summary": "По обращению о неработающей кофемолке подтверждён возврат.",
+      "authorization_reference": "RA-5887"
+    },
+    {
+      "record_id": "RH-5890",
+      "order_number": "SC-84989",
+      "opened_at": "2026-09-06T10:18:00+03:00",
+      "closed_at": "2026-09-08T12:42:00+03:00",
+      "status": "RETURN_AUTHORIZED",
+      "reason_code": "ITEM_DOES_NOT_HEAT",
+      "summary": "По обращению о тостере, который не нагревает хлеб, подтверждён возврат.",
+      "authorization_reference": "RA-5890"
+    },
+    {
+      "record_id": "RH-5896",
+      "order_number": "SC-84690",
+      "opened_at": "2026-09-03T14:07:00+03:00",
+      "closed_at": "2026-09-04T09:30:00+03:00",
+      "status": "INFORMATION_PROVIDED",
+      "reason_code": "USE_INSTRUCTIONS",
+      "summary": "Клиенту отправили инструкцию по выбору и установке насадки для миксера.",
+      "authorization_reference": null
+    },
+    {
+      "record_id": "RH-5901",
+      "order_number": "SC-84595",
+      "opened_at": "2026-08-29T11:51:00+03:00",
+      "closed_at": "2026-09-01T16:04:00+03:00",
+      "status": "RETURN_AUTHORIZED",
+      "reason_code": "DAMAGED_BOWL",
+      "summary": "По обращению о трещине чаши кухонного комбайна подтверждён возврат.",
+      "authorization_reference": "RA-5901"
+    }
+  ]
+}
