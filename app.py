@@ -4,7 +4,14 @@ from flask import Flask, jsonify, request, render_template
 from decision_rules import validate_route
 
 from auth import is_authorized_manager
-from database import confirm_manager_decision, save_recommendation, save_analysis
+from database import (
+    confirm_manager_decision,
+    
+    save_recommendation,
+    save_analysis,
+    record_event,
+    get_case_events,
+)
 app = Flask(__name__)
 app.json.ensure_ascii = False
 
@@ -101,6 +108,40 @@ def confirm_decision_endpoint():
     if not confirmed:
         return jsonify({"error": "Решение не сохранено"}), 409
 
+    record_event(
+        case_id,
+        "MANAGER_CONFIRMED",
+        f"Итоговое решение: {final_decision}",
+    )
+
+    if final_decision == "DENIED":
+        record_event(
+            case_id,
+            "RETURN_DENIED",
+            "Менеджер подтвердил отказ",
+        )
+
+    if final_decision == "APPROVED":
+        import sqlite3
+        from database import DATABASE_PATH
+
+        with sqlite3.connect(DATABASE_PATH) as connection:
+            authorization = connection.execute(
+                """
+                SELECT authorization_reference
+                FROM return_authorizations
+                WHERE case_id = ?
+                """,
+                (case_id,),
+            ).fetchone()
+
+        if authorization:
+            record_event(
+                case_id,
+                "AUTHORIZATION_ISSUED",
+                f"Учебное разрешение: {authorization[0]}",
+            )
+
     return jsonify({
         "case_id": case_id,
         "final_decision": final_decision,
@@ -177,6 +218,7 @@ def get_case_details(case_id):
         "history": history,
         "analysis": analysis,
         "decision": decision,
+        "events": get_case_events(case_id),
     })
 
 
@@ -234,6 +276,33 @@ def analyze_case_endpoint(case_id):
         result = validate_ai_result(raw_result)
         save_recommendation(case_id, result["route"])
         save_analysis(case_id, result)
+
+        record_event(
+            case_id,
+            "ROUTE_SELECTED",
+            (
+                f"Маршрут: {result['route']}; "
+                "источники: open-cases.json, orders.json, "
+                "return-history.json, return-policy.md, "
+                "category-rules.md"
+            ),
+        )
+
+        event_by_route = {
+            "DUPLICATE_OR_PROCESSED": "DUPLICATE_DETECTED",
+            "MANUAL_REVIEW": "MANUAL_REVIEW_REQUIRED",
+            "NEED_MORE_INFORMATION": "MORE_INFORMATION_REQUIRED",
+        }
+
+        event_type = event_by_route.get(result["route"])
+
+        if event_type:
+            record_event(
+                case_id,
+                event_type,
+                f"Обработка остановлена на маршруте {result['route']}",
+            )
+
     except Exception:
         app.logger.exception("Ошибка анализа обращения %s", case_id)
         return jsonify({

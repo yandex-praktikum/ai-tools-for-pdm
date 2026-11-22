@@ -211,5 +211,70 @@ def add_manager_reason_column():
                 "ALTER TABLE decisions ADD COLUMN manager_reason TEXT"
             )
 
+def record_event(case_id, event_type, details=""):
+    allowed_events = {
+        "ROUTE_SELECTED",
+        "DUPLICATE_DETECTED",
+        "MANUAL_REVIEW_REQUIRED",
+        "MORE_INFORMATION_REQUIRED",
+        "ANALYSIS_FAILED",
+        "MANAGER_CONFIRMED",
+        "AUTHORIZATION_ISSUED",
+        "RETURN_DENIED",
+        "START_DATA_RESTORED",
+    }
+
+    if event_type not in allowed_events:
+        raise ValueError("Недопустимый тип события")
+
+    with sqlite3.connect(DATABASE_PATH) as connection:
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS event_log (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                case_id TEXT NOT NULL,
+                event_type TEXT NOT NULL,
+                details TEXT NOT NULL DEFAULT '',
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        connection.execute(
+            """
+            INSERT INTO event_log (
+                case_id, event_type, details
+            )
+            VALUES (?, ?, ?)
+            """,
+            (case_id, event_type, details),
+        )
+
+
+def get_case_events(case_id):
+    with sqlite3.connect(DATABASE_PATH) as connection:
+        connection.row_factory = sqlite3.Row
+
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS event_log (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                case_id TEXT NOT NULL,
+                event_type TEXT NOT NULL,
+                details TEXT NOT NULL DEFAULT '',
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        rows = connection.execute(
+            """
+            SELECT event_type, details, created_at
+            FROM event_log
+            WHERE case_id = ?
+            ORDER BY id
+            """,
+            (case_id,),
+        ).fetchall()
+
+    return [dict(row) for row in rows]
+
+
 
 
