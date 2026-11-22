@@ -148,6 +148,31 @@
                 addField(detailsContainer, "Данные заказа", data.order);
                 addField(detailsContainer, "История обращений", data.history);
              
+                const eventsSection = document.createElement("div");
+                eventsSection.id = "case-events";
+
+                const eventsTitle = document.createElement("h3");
+                eventsTitle.textContent = "Журнал событий";
+                eventsSection.appendChild(eventsTitle);
+
+                if (data.events && data.events.length > 0) {
+                    data.events.forEach(event => {
+                        addField(
+                            eventsSection,
+                            event.created_at + " · " + event.event_type,
+                            event.details
+                        );
+                    });
+                } else {
+                    addField(
+                        eventsSection,
+                        "Состояние журнала",
+                        "События пока не записаны"
+                    );
+                }
+
+                detailsContainer.appendChild(eventsSection);
+
             
                 function showAnalysis(analysis, decision = null) {
                     const existing = document.getElementById("analysis-card");
@@ -257,7 +282,7 @@
                             reasonInput.disabled = true;
                             confirmButton.disabled = true;
                             confirmButton.textContent = "Решение подтверждено";
-
+                            await showCase(caseId);
                         } catch (error) {
                             alert(error.message);
                             confirmButton.disabled = false;
